@@ -4,7 +4,7 @@
 
 Single-page application (SPA) brochure site for Kemunto Achira's wellness education practice, **Shalom Wellness Network**. Sells the Feel Great Protocol (Unicity affiliate) and collects leads via three forms.
 
-**Live site:** https://shalom-wellness-preview.netlify.app/ (will move to `shalomwellnessnetwork.com` once Kemunto's domain + Netlify are set up)
+**Live site:** https://shalomwellnessnetwork.netlify.app/ (will move to `shalomwellnessnetwork.com` once Kemunto's domain + Netlify are set up)
 
 **Tagline:** Wholeness for You. Hope for Generations.
 
