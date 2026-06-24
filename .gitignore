@@ -1,0 +1,15 @@
+# Local Netlify CLI state
+.netlify
+
+# macOS
+.DS_Store
+
+# Backup / archive files (kept locally only, not deployed)
+*.bak
+index.mockup-v1-archive.html
+original.html
+
+# Editor cruft
+.vscode
+.idea
+*.swp
