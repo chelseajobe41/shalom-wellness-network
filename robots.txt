@@ -48,4 +48,4 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://shalomwellnessnetwork.netlify.app/sitemap.xml
+Sitemap: https://shalomwellnessnetwork.com/sitemap.xml

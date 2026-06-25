@@ -1,0 +1,12 @@
+# Clean URLs for the SPA: serve index.html for any path that isn't a real file,
+# then the JS router picks the right page based on location.pathname.
+# Netlify checks for actual files first (PDFs, images, videos, .well-known, etc.),
+# so static assets aren't affected.
+/about      /index.html   200
+/protocol   /index.html   200
+/quiz       /index.html   200
+/stories    /index.html   200
+/contact    /index.html   200
+
+# Catch-all for any future routes or accidental deep links.
+/*          /index.html   200
