@@ -101,7 +101,7 @@ All forms use **native Netlify Forms** (not FormSubmit or any third party). Subm
 | `quiz-call-request` | After quiz result, visitor clicks "Book My Free 15-Min Call" (JS posts to hidden form) |
 | `free-guide` | Visitor enters name/email on Home or Quiz page lead magnet (aggregated; `source` field tells them apart) |
 
-**Email notification setup (one-time, in Netlify UI):** Site overview → Forms → Settings & usage → Form notifications → Add notification → Email → enter `mamamboga4life@gmail.com`. Apply to "All form submissions" or per-form.
+**Email notification setup (one-time, in Netlify UI):** ⚠️ **Requires Netlify Pro ($19/mo)**. Email-on-form-submission is gated behind Pro on Netlify; the free tier still stores submissions in the dashboard but does not auto-email. Once Pro is active: Site → Forms → Form notifications → Add notification → Email → enter `mamamboga4life@gmail.com`. Apply to "All forms" so one rule covers all 4 forms. Kemunto pays for Pro on her own Netlify account (decided 2026-06-24).
 
 **Bot detection:** every form includes a hidden `bot-field` honeypot input. Bot fills it → submission silently dropped. Netlify also has Akismet spam filtering enabled by default.
 
