@@ -725,12 +725,11 @@
         <div class="free-guide-form">
           <h4>Grab your free copy.</h4>
           <p class="intro">Drop your name and email and the guide is yours. Kemunto reads every signup, so consider this an open door.</p>
-          <form method="POST" onsubmit="handleFreeGuide(event, this)" class="free-guide-form-el">
-            <input type="hidden" name="_subject" value="New free-guide signup · Shalom Wellness Network"/>
-            <input type="hidden" name="_template" value="table"/>
-            <input type="hidden" name="_captcha" value="false"/>
+          <form method="POST" onsubmit="handleFreeGuide(event, this)" class="free-guide-form-el" name="free-guide" data-netlify="true" data-netlify-honeypot="bot-field" netlify>
+            <input type="hidden" name="form-name" value="free-guide"/>
             <input type="hidden" name="lead_magnet" value="Why Am I Always Tired, Hungry & Gaining Weight?"/>
-            <p style="display:none" aria-hidden="true"><label>Skip this if you're human: <input name="_honey" tabindex="-1"/></label></p>
+            <input type="hidden" name="source" value="home"/>
+            <p style="display:none" aria-hidden="true"><label>Skip this if you're human: <input name="bot-field" tabindex="-1"/></label></p>
             <input type="text" name="firstName" placeholder="First name" required/>
             <input type="email" name="email" placeholder="you@email.com" required/>
             <button type="submit">Send Me the Free Guide</button>
@@ -1159,12 +1158,10 @@
             <p class="body-text body-text-light" style="margin-bottom:2.5rem">A real conversation with Kemunto about the Feel Great Protocol and whether it's right for you. No pressure. Open to anyone in the U.S. Fill out the form and Kemunto will reach out to schedule.</p>
           </div>
           <div class="sr fade-up" style="transition-delay:200ms" id="form-area">
-            <form class="form-wrap" onsubmit="handleConsultForm(event)" method="POST">
-              <!-- Submissions email directly to Kemunto via FormSubmit.co -->
-              <input type="hidden" name="_subject" value="New consultation request · Shalom Wellness Network"/>
-              <input type="hidden" name="_template" value="table"/>
-              <input type="hidden" name="_captcha" value="false"/>
-              <p style="display:none" aria-hidden="true"><label>Skip this if you're human: <input name="_honey" tabindex="-1"/></label></p>
+            <form class="form-wrap" onsubmit="handleConsultForm(event)" method="POST" name="consultation" data-netlify="true" data-netlify-honeypot="bot-field" netlify>
+              <!-- Submissions go to Netlify Forms dashboard + email Kemunto -->
+              <input type="hidden" name="form-name" value="consultation"/>
+              <p style="display:none" aria-hidden="true"><label>Skip this if you're human: <input name="bot-field" tabindex="-1"/></label></p>
               <div class="form-row">
                 <div><label class="form-label" for="firstName">First Name *</label><input class="form-input" type="text" id="firstName" name="firstName" required placeholder="Your first name"/></div>
                 <div><label class="form-label" for="lastName">Last Name *</label><input class="form-input" type="text" id="lastName" name="lastName" required placeholder="Your last name"/></div>
@@ -1405,11 +1402,9 @@
             <div class="quiz-share" id="quizGate" style="display:none">
               <h4>Almost there. Where should we send your results?</h4>
               <p>Drop your name and email so Kemunto has your full results on file if you reach out.</p>
-              <form id="quizGateForm" method="POST" onsubmit="handleQuizGate(event)">
-                <input type="hidden" name="_subject" value="New quiz submission · Shalom Wellness Network"/>
-                <input type="hidden" name="_template" value="table"/>
-                <input type="hidden" name="_captcha" value="false"/>
-                <p style="display:none" aria-hidden="true"><label>Skip this if you're human: <input name="_honey" tabindex="-1"/></label></p>
+              <form id="quizGateForm" method="POST" onsubmit="handleQuizGate(event)" name="quiz-results" data-netlify="true" data-netlify-honeypot="bot-field" netlify>
+                <input type="hidden" name="form-name" value="quiz-results"/>
+                <p style="display:none" aria-hidden="true"><label>Skip this if you're human: <input name="bot-field" tabindex="-1"/></label></p>
                 <input type="hidden" name="zone" id="shareZone"/>
                 <input type="hidden" name="score" id="shareScore"/>
                 <input type="hidden" name="q1_stage" id="shareQ1"/>
@@ -1476,12 +1471,11 @@
           <div class="free-guide-form">
             <h4>Want the full breakdown?</h4>
             <p class="intro">Drop your name and email. The PDF is yours, and so is the door to Kemunto if you want to talk.</p>
-            <form method="POST" onsubmit="handleFreeGuide(event, this)" class="free-guide-form-el">
-              <input type="hidden" name="_subject" value="New free-guide signup · Shalom Wellness Network"/>
-              <input type="hidden" name="_template" value="table"/>
-              <input type="hidden" name="_captcha" value="false"/>
+            <form method="POST" onsubmit="handleFreeGuide(event, this)" class="free-guide-form-el" name="free-guide" data-netlify="true" data-netlify-honeypot="bot-field" netlify>
+              <input type="hidden" name="form-name" value="free-guide"/>
               <input type="hidden" name="lead_magnet" value="Why Am I Always Tired, Hungry & Gaining Weight?"/>
-              <p style="display:none" aria-hidden="true"><label>Skip this if you're human: <input name="_honey" tabindex="-1"/></label></p>
+              <input type="hidden" name="source" value="quiz-page"/>
+              <p style="display:none" aria-hidden="true"><label>Skip this if you're human: <input name="bot-field" tabindex="-1"/></label></p>
               <input type="text" name="firstName" placeholder="First name" required/>
               <input type="email" name="email" placeholder="you@email.com" required/>
               <button type="submit">Send Me the Free Guide</button>
@@ -1947,21 +1941,24 @@
 
   // ---- FORM ENDPOINTS ----
   // Both site forms submit through FormSubmit.co directly to Kemunto's Gmail.
-  // One-time setup: the first submission triggers a confirmation email from
-  // FormSubmit.co to mamamboga4life@gmail.com. Kemunto clicks the link in
-  // that email once. From then on, every submission delivers to her inbox
-  // with all fields filled in. No Netlify dashboard config required.
-  const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/mamamboga4life@gmail.com';
-
-  function postToFormSubmit(form) {
+  // Forms submit to Netlify Forms (native). Submissions are stored in the
+  // Netlify dashboard AND emailed to mamamboga4life@gmail.com. No third-party
+  // service, no activation link, no token expiry. POST as url-encoded body
+  // to "/" with form-name field matching the static <form name="..."> in HTML.
+  function postToNetlify(form) {
     const data = new FormData(form);
-    const payload = {};
-    data.forEach((v, k) => { payload[k] = v; });
-    return fetch(FORMSUBMIT_ENDPOINT, {
+    return fetch('/', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(payload)
-    }).then(r => r.json());
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(data).toString()
+    });
+  }
+  function postPayloadToNetlify(payload) {
+    return fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(payload).toString()
+    });
   }
 
   // ---- CONSULTATION FORM (Contact page) ----
@@ -1973,21 +1970,18 @@
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
-    postToFormSubmit(form)
-      .then(result => {
-        if (result && (result.success === 'true' || result.success === true)) {
-          document.getElementById('form-area').innerHTML = `
-            <div class="success-box">
-              <div class="check-circle">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C8873A" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-              </div>
-              <h3>Thank you, ${firstName}!</h3>
-              <p>Your request just landed in Kemunto's inbox. She'll be in touch within 24 to 48 hours to schedule your free call.</p>
-              <p style="font-size:0.85rem;color:rgba(26,15,36,0.55);margin-top:1rem">Didn't get a reply? Email her directly at <a href="mailto:mamamboga4life@gmail.com" style="color:var(--amber)">mamamboga4life@gmail.com</a>.</p>
-            </div>`;
-        } else {
-          throw new Error('Unexpected response');
-        }
+    postToNetlify(form)
+      .then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        document.getElementById('form-area').innerHTML = `
+          <div class="success-box">
+            <div class="check-circle">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C8873A" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <h3>Thank you, ${firstName}!</h3>
+            <p>Your request just landed in Kemunto's inbox. She'll be in touch within 24 to 48 hours to schedule your free call.</p>
+            <p style="font-size:0.85rem;color:rgba(26,15,36,0.55);margin-top:1rem">Didn't get a reply? Email her directly at <a href="mailto:mamamboga4life@gmail.com" style="color:var(--amber)">mamamboga4life@gmail.com</a>.</p>
+          </div>`;
       })
       .catch(err => {
         btn.textContent = 'Try Again';
@@ -2169,24 +2163,21 @@
     const firstName = form.querySelector('input[name="firstName"]').value;
     btn.textContent = 'Sending...';
     btn.disabled = true;
-    postToFormSubmit(form)
-      .then(result => {
-        if (result && (result.success === 'true' || result.success === true)) {
-          // Trigger PDF download
-          const a = document.createElement('a');
-          a.href = FREE_GUIDE_PDF;
-          a.download = 'Why-Am-I-Always-Tired-Hungry-Gaining-Weight.pdf';
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          // Swap form for success message
-          form.style.display = 'none';
-          const ok = form.parentElement.querySelector('.free-guide-success');
-          ok.style.display = 'block';
-          ok.innerHTML = 'Thank you, ' + firstName + '. Your guide is downloading now. <br><a href="' + FREE_GUIDE_PDF + '" target="_blank" rel="noopener">Didn\'t download? Click here.</a>';
-        } else {
-          throw new Error('Unexpected response');
-        }
+    postToNetlify(form)
+      .then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        // Trigger PDF download
+        const a = document.createElement('a');
+        a.href = FREE_GUIDE_PDF;
+        a.download = 'Why-Am-I-Always-Tired-Hungry-Gaining-Weight.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        // Swap form for success message
+        form.style.display = 'none';
+        const ok = form.parentElement.querySelector('.free-guide-success');
+        ok.style.display = 'block';
+        ok.innerHTML = 'Thank you, ' + firstName + '. Your guide is downloading now. <br><a href="' + FREE_GUIDE_PDF + '" target="_blank" rel="noopener">Didn\'t download? Click here.</a>';
       })
       .catch(err => {
         // Still let them download even if email capture failed
@@ -2207,14 +2198,11 @@
     const firstName = form.querySelector('input[name="firstName"]').value;
     btn.textContent = 'Sending your results...';
     btn.disabled = true;
-    postToFormSubmit(form)
-      .then(result => {
-        if (result && (result.success === 'true' || result.success === true)) {
-          // Reveal the result block (defined inside the IIFE on window)
-          if (window.__revealQuizResult) window.__revealQuizResult();
-        } else {
-          throw new Error('Unexpected response');
-        }
+    postToNetlify(form)
+      .then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        // Reveal the result block (defined inside the IIFE on window)
+        if (window.__revealQuizResult) window.__revealQuizResult();
       })
       .catch(err => {
         // Even if the email fails, reveal results so the visitor still gets value.
@@ -2268,41 +2256,45 @@
     const { firstName, email } = getQuizGateInfo();
     btn.disabled = true;
     btn.textContent = 'Sending...';
-    // Build a small follow-up payload that emails Kemunto with the call request
+    // Build the call-request payload. The matching <form name="quiz-call-request">
+    // exists hidden at the bottom of the page so Netlify detects it at build time.
     const payload = {
-      _subject: '⏰ Quiz visitor wants a 15-min call · Shalom Wellness Network',
-      _template: 'table',
-      _captcha: 'false',
+      'form-name': 'quiz-call-request',
       requested: 'Free 15-minute call',
       firstName: firstName,
       email: email,
       zone: document.getElementById('shareZone').value,
       score: document.getElementById('shareScore').value
     };
-    fetch(FORMSUBMIT_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(payload)
-    })
-    .then(r => r.json())
-    .then(result => {
-      if (result && (result.success === 'true' || result.success === true)) {
+    postPayloadToNetlify(payload)
+      .then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
         btn.textContent = '✓ Call Requested';
         status.style.display = 'block';
         status.innerHTML = 'Got it' + (firstName ? ', ' + firstName : '') + '. Kemunto will reach out within 24 to 48 hours to schedule your 15-minute call.';
-      } else {
-        throw new Error('Unexpected response');
-      }
-    })
-    .catch(err => {
-      btn.disabled = false;
-      btn.textContent = 'Try Again';
-      status.style.display = 'block';
-      status.style.color = '#B85C5C';
-      status.innerHTML = 'Something went wrong. Please email Kemunto directly at <a href="mailto:mamamboga4life@gmail.com">mamamboga4life@gmail.com</a> to book your 15-minute call.';
-    });
+      })
+      .catch(err => {
+        btn.disabled = false;
+        btn.textContent = 'Try Again';
+        status.style.display = 'block';
+        status.style.color = '#B85C5C';
+        status.innerHTML = 'Something went wrong. Please email Kemunto directly at <a href="mailto:mamamboga4life@gmail.com">mamamboga4life@gmail.com</a> to book your 15-minute call.';
+      });
   }
 
 </script>
+
+<!-- Hidden form so Netlify detects the "Book My Free 15-Min Call" submission at build time.
+     The visible button after the quiz result builds the same payload in JS and POSTs to "/". -->
+<form name="quiz-call-request" data-netlify="true" data-netlify-honeypot="bot-field" netlify hidden>
+  <input type="hidden" name="form-name" value="quiz-call-request"/>
+  <input type="text" name="firstName"/>
+  <input type="email" name="email"/>
+  <input type="text" name="requested"/>
+  <input type="text" name="zone"/>
+  <input type="text" name="score"/>
+  <input type="text" name="bot-field"/>
+</form>
+
 </body>
 </html>

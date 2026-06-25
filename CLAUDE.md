@@ -25,7 +25,7 @@ Single-page application (SPA) brochure site for Kemunto Achira's wellness educat
 | Source code / GitHub repo | Chelsea | Temporary — will transfer to Kemunto at full handoff |
 | Netlify account + site | Kemunto (`mamamboga4life@gmail.com`) | Chelsea is added as Team Owner so her CLI deploys still work |
 | Domain registration (Porkbun) | Kemunto | Bought in her name with her payment |
-| Form submissions inbox | Kemunto (`mamamboga4life@gmail.com`) | Routes through FormSubmit.co |
+| Form submissions inbox | Kemunto (`mamamboga4life@gmail.com`) | Native Netlify Forms — emails Kemunto AND stored in Netlify dashboard as backup |
 | Unicity affiliate (Feel Great Protocol referral) | Kemunto / Josephine | All "Join the Protocol" buttons → `ufeelgreat.com/c/Josephine`. Do NOT change unless Kemunto confirms a new referral code is live in Unicity. |
 | Juice Plus+ affiliate | Kemunto | `us.juiceplus.com/?partnerAlias=josephine6` |
 | Unicity Shop | Kemunto | `shop2.unicity.com/usa/en/products?referralCode=Josephine` |
@@ -87,16 +87,27 @@ Chelsea never logs into Kemunto's Netlify. Kemunto never touches the GitHub repo
 
 ## Forms — how they email Kemunto
 
-All three forms (Contact, Quiz Gate, Free Guide) submit to **FormSubmit.co AJAX endpoint** at `https://formsubmit.co/ajax/mamamboga4life@gmail.com`. No backend code, no API keys. FormSubmit needs a one-time activation: first form submission triggers a verification email; Kemunto clicks Activate once and every submission afterward delivers to her Gmail.
+All forms use **native Netlify Forms** (not FormSubmit or any third party). Submissions:
+1. POST as `application/x-www-form-urlencoded` to `/` with a `form-name` field matching the static `<form name="...">` in HTML
+2. Get stored in Netlify dashboard → Site → Forms (permanent backup)
+3. Auto-email the configured notification address (mamamboga4life@gmail.com)
 
-| Form | Trigger | Subject she'll see |
-|---|---|---|
-| Contact | Visitor fills Contact page form | "New consultation request · Shalom Wellness Network" |
-| Quiz Gate | Visitor finishes 10-question quiz + enters name/email | "New quiz submission · Shalom Wellness Network" |
-| Quiz "Book My 15-Min Call" | After result, visitor clicks the call button | "⏰ Quiz visitor wants a 15-min call · Shalom Wellness Network" |
-| Free Guide | Visitor enters name/email on Home or Quiz page lead magnet | "New free-guide signup · Shalom Wellness Network" |
+**No activation step. No third-party service. No token expiry.** Netlify detects forms by scanning the deployed HTML for `<form>` tags with `data-netlify="true"`. Forms must exist in static HTML at deploy time (JS-only forms won't be detected — that's why `quiz-call-request` has a hidden detection form at the bottom of `index.html`).
 
-If a form fails (FormSubmit down, visitor offline), the JS falls back to surfacing her email address `mamamboga4life@gmail.com` so they can reach her directly.
+| Form name (Netlify) | Trigger |
+|---|---|
+| `consultation` | Visitor fills Contact page form |
+| `quiz-results` | Visitor finishes 10-question quiz + enters name/email |
+| `quiz-call-request` | After quiz result, visitor clicks "Book My Free 15-Min Call" (JS posts to hidden form) |
+| `free-guide` | Visitor enters name/email on Home or Quiz page lead magnet (aggregated; `source` field tells them apart) |
+
+**Email notification setup (one-time, in Netlify UI):** Site overview → Forms → Settings & usage → Form notifications → Add notification → Email → enter `mamamboga4life@gmail.com`. Apply to "All form submissions" or per-form.
+
+**Bot detection:** every form includes a hidden `bot-field` honeypot input. Bot fills it → submission silently dropped. Netlify also has Akismet spam filtering enabled by default.
+
+**Quota:** 100 submissions/month free; $19/mo for Level 1 (1,000/mo) if she ever outgrows it.
+
+**Fallback:** if a Netlify submission fails (network error, etc.), the JS surfaces `mamamboga4life@gmail.com` so the visitor can reach her directly.
 
 ## Local preview
 

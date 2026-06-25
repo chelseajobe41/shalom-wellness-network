@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "shalom-wellness",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4488", "--directory", "/Users/chelseajobe/shalom-wellness"],
+      "port": 4488
+    }
+  ]
+}
