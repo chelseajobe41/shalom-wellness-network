@@ -23,6 +23,8 @@
   <meta name="twitter:image" content="https://shalomwellnessnetwork.com/kemunto-about-hero.jpg"/>
   <!-- Inline SVG favicon (amber circle on plum, matches brand) -->
   <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><circle cx="40" cy="40" r="38" fill="%233D1F4E"/><circle cx="40" cy="40" r="22" fill="none" stroke="%23C8873A" stroke-width="3"/><circle cx="40" cy="22" r="5" fill="%23C8873A"/><circle cx="40" cy="58" r="5" fill="%23C8873A"/><circle cx="22" cy="40" r="5" fill="%23C8873A"/><circle cx="58" cy="40" r="5" fill="%23C8873A"/></svg>'/>
+  <!-- hCaptcha (bot protection on all lead-capture forms) -->
+  <script src="https://hcaptcha.com/1/api.js" async defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <!-- Async font load (non-render-blocking). Falls back to system fonts until loaded. -->
@@ -725,13 +727,14 @@
         <div class="free-guide-form">
           <h4>Grab your free copy.</h4>
           <p class="intro">Drop your name and email and the guide is yours. Kemunto reads every signup, so consider this an open door.</p>
-          <form method="POST" onsubmit="handleFreeGuide(event, this)" class="free-guide-form-el" name="free-guide" data-netlify="true" data-netlify-honeypot="bot-field" netlify>
+          <form method="POST" onsubmit="handleFreeGuide(event, this)" class="free-guide-form-el" name="free-guide" data-netlify="true" data-netlify-honeypot="bot-field" data-netlify-recaptcha="true" netlify>
             <input type="hidden" name="form-name" value="free-guide"/>
             <input type="hidden" name="lead_magnet" value="Why Am I Always Tired, Hungry & Gaining Weight?"/>
             <input type="hidden" name="source" value="home"/>
             <p style="display:none" aria-hidden="true"><label>Skip this if you're human: <input name="bot-field" tabindex="-1"/></label></p>
             <input type="text" name="firstName" placeholder="First name" required/>
             <input type="email" name="email" placeholder="you@email.com" required/>
+            <div class="h-captcha" data-sitekey="10000000-ffff-ffff-ffff-000000000001" style="margin:0.75rem 0;display:flex;justify-content:center"></div>
             <button type="submit">Send Me the Free Guide</button>
             <p class="free-guide-fineprint">PDF download. We'll never share your email.</p>
           </form>
@@ -1158,7 +1161,7 @@
             <p class="body-text body-text-light" style="margin-bottom:2.5rem">A real conversation with Kemunto about the Feel Great Protocol and whether it's right for you. No pressure. Open to anyone in the U.S. Fill out the form and Kemunto will reach out to schedule.</p>
           </div>
           <div class="sr fade-up" style="transition-delay:200ms" id="form-area">
-            <form class="form-wrap" onsubmit="handleConsultForm(event)" method="POST" name="consultation" data-netlify="true" data-netlify-honeypot="bot-field" netlify>
+            <form class="form-wrap" onsubmit="handleConsultForm(event)" method="POST" name="consultation" data-netlify="true" data-netlify-honeypot="bot-field" data-netlify-recaptcha="true" netlify>
               <!-- Submissions go to Netlify Forms dashboard + email Kemunto -->
               <input type="hidden" name="form-name" value="consultation"/>
               <p style="display:none" aria-hidden="true"><label>Skip this if you're human: <input name="bot-field" tabindex="-1"/></label></p>
@@ -1184,6 +1187,10 @@
               <div class="form-group">
                 <label class="form-label" for="howHeard">How did you hear about us?</label>
                 <input class="form-input" type="text" id="howHeard" name="howHeard" placeholder="Social media, referral, search, etc."/>
+              </div>
+              <!-- hCaptcha: SWAP data-sitekey for the real one from Netlify → Site config → Forms → reCAPTCHA -->
+              <div class="form-group" style="display:flex;justify-content:center;margin:1rem 0">
+                <div class="h-captcha" data-sitekey="10000000-ffff-ffff-ffff-000000000001"></div>
               </div>
               <button type="submit" class="form-submit" id="submit-btn">Request My Free 15-Min Call</button>
               <p class="form-note">By submitting this form, you agree to be contacted by Kemunto at Shalom Wellness Network regarding your call request.</p>
@@ -1402,7 +1409,7 @@
             <div class="quiz-share" id="quizGate" style="display:none">
               <h4>Almost there. Where should we send your results?</h4>
               <p>Drop your name and email so Kemunto has your full results on file if you reach out.</p>
-              <form id="quizGateForm" method="POST" onsubmit="handleQuizGate(event)" name="quiz-results" data-netlify="true" data-netlify-honeypot="bot-field" netlify>
+              <form id="quizGateForm" method="POST" onsubmit="handleQuizGate(event)" name="quiz-results" data-netlify="true" data-netlify-honeypot="bot-field" data-netlify-recaptcha="true" netlify>
                 <input type="hidden" name="form-name" value="quiz-results"/>
                 <p style="display:none" aria-hidden="true"><label>Skip this if you're human: <input name="bot-field" tabindex="-1"/></label></p>
                 <input type="hidden" name="zone" id="shareZone"/>
@@ -1421,6 +1428,7 @@
                   <input type="text" name="firstName" id="gateFirstName" placeholder="Your first name" required/>
                   <input type="email" name="email" id="gateEmail" placeholder="you@email.com" required/>
                 </div>
+                <div class="h-captcha" data-sitekey="10000000-ffff-ffff-ffff-000000000001" style="margin:0.75rem 0;display:flex;justify-content:center"></div>
                 <button type="submit" class="quiz-share-submit" id="quizGateSubmit">See My Results</button>
               </form>
               <div id="quizGateError" class="quiz-share-success" style="display:none"></div>
@@ -1471,13 +1479,14 @@
           <div class="free-guide-form">
             <h4>Want the full breakdown?</h4>
             <p class="intro">Drop your name and email. The PDF is yours, and so is the door to Kemunto if you want to talk.</p>
-            <form method="POST" onsubmit="handleFreeGuide(event, this)" class="free-guide-form-el" name="free-guide" data-netlify="true" data-netlify-honeypot="bot-field" netlify>
+            <form method="POST" onsubmit="handleFreeGuide(event, this)" class="free-guide-form-el" name="free-guide" data-netlify="true" data-netlify-honeypot="bot-field" data-netlify-recaptcha="true" netlify>
               <input type="hidden" name="form-name" value="free-guide"/>
               <input type="hidden" name="lead_magnet" value="Why Am I Always Tired, Hungry & Gaining Weight?"/>
               <input type="hidden" name="source" value="quiz-page"/>
               <p style="display:none" aria-hidden="true"><label>Skip this if you're human: <input name="bot-field" tabindex="-1"/></label></p>
               <input type="text" name="firstName" placeholder="First name" required/>
               <input type="email" name="email" placeholder="you@email.com" required/>
+              <div class="h-captcha" data-sitekey="10000000-ffff-ffff-ffff-000000000001" style="margin:0.75rem 0;display:flex;justify-content:center"></div>
               <button type="submit">Send Me the Free Guide</button>
               <p class="free-guide-fineprint">PDF download. We'll never share your email.</p>
             </form>
@@ -1963,6 +1972,13 @@
       body: new URLSearchParams(data).toString()
     });
   }
+  // Returns true if the visitor has solved the hCaptcha widget in the form.
+  // Bots that POST directly to / bypass this; Netlify also validates server-side
+  // and rejects submissions missing a valid h-captcha-response token.
+  function hasCaptcha(form) {
+    const el = form.querySelector('textarea[name="h-captcha-response"], input[name="h-captcha-response"]');
+    return !!(el && el.value && el.value.length > 0);
+  }
   function postPayloadToNetlify(payload) {
     return fetch('/', {
       method: 'POST',
@@ -1977,6 +1993,11 @@
     const form = e.target;
     const btn = document.getElementById('submit-btn');
     const firstName = document.getElementById('firstName').value;
+    if (!hasCaptcha(form)) {
+      const note = document.querySelector('.form-note');
+      if (note) { note.style.color = '#B85C5C'; note.textContent = 'Please complete the captcha below the form before submitting.'; }
+      return;
+    }
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
@@ -2171,6 +2192,11 @@
     e.preventDefault();
     const btn = form.querySelector('button[type="submit"]');
     const firstName = form.querySelector('input[name="firstName"]').value;
+    if (!hasCaptcha(form)) {
+      const ok = form.parentElement.querySelector('.free-guide-success');
+      if (ok) { ok.style.display = 'block'; ok.style.color = '#B85C5C'; ok.textContent = 'Please complete the captcha above before submitting.'; }
+      return;
+    }
     btn.textContent = 'Sending...';
     btn.disabled = true;
     postToNetlify(form)
@@ -2206,6 +2232,11 @@
     const form = e.target;
     const btn = document.getElementById('quizGateSubmit');
     const firstName = form.querySelector('input[name="firstName"]').value;
+    if (!hasCaptcha(form)) {
+      const err = document.getElementById('quizGateError');
+      if (err) { err.style.display = 'block'; err.style.color = '#B85C5C'; err.textContent = 'Please complete the captcha above before seeing your results.'; }
+      return;
+    }
     btn.textContent = 'Sending your results...';
     btn.disabled = true;
     postToNetlify(form)
